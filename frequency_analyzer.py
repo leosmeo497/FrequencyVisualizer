@@ -145,7 +145,7 @@ def resource_path(relative_path):
 # =========================
 # CONSTANTS
 # =========================
-RATE = 44100
+RATE = 48000
 CHUNK = 1024
 FRAME = 2048
 HOP = 512
@@ -297,7 +297,7 @@ def freq_to_note(f):
 class App:
     def __init__(self, root):
         self.root = root
-        root.title("HZMeter")
+        root.title("Frequency Visualizer")
 
         self.audio = None
         self.markers = []
@@ -408,6 +408,9 @@ class App:
         self.misc_menu.add_command(label="Help", command=self.show_help)
         self.misc_menu.add_command(label="Documentation", command=self.show_documentation)
         self.misc_menu.add_command(label="Credits", command=self.show_credits)
+        
+        # Apply initial light mode theme
+        self._apply_initial_theme()
 
     # =========================
     # POPUPS
@@ -417,6 +420,10 @@ class App:
         doc_win = tk.Toplevel(self.root)
         doc_win.title("Documentation - Development Process")
         doc_win.geometry("800x700")
+        try:
+            doc_win.iconbitmap(resource_path("FV_icon.ico"))
+        except Exception:
+            pass
         
         doc_text = (
             "INTRODUCTION\n\n"
@@ -485,6 +492,80 @@ class App:
             "Despite these limitations, the application fulfills its intended role as a "
             "learning-oriented, experiment-focused analysis tool.\n\n\n"
             
+            "DESIGNED FOR: BLUE MICROPHONES™ BLUE YETI USB MIC\n\n"
+            "This application was developed and optimized specifically for use with the "
+            "Blue Microphones™ Blue Yeti USB Microphone. The Blue Yeti is a professional "
+            "USB condenser microphone widely used for podcasting, streaming, and recording.\n\n"
+            
+            "Recording Specifications:\n"
+            "  • Type: Table microphone (3 condenser capsules)\n"
+            "  • Frequency Response: 20 - 20,000 Hz\n"
+            "  • Microphone Total Harmonic Distortion (THD): 0.5%\n"
+            "  • Sample Rate: 48 kHz / 16-bit\n"
+            "  • Connectivity: USB (Wired)\n"
+            "  • Power: USB powered (5V, 150 mA)\n\n"
+            
+            "Operating System Compatibility:\n"
+            "  • Windows: 7, 8, 8.1, 10, 11\n"
+            "  • macOS: 10.10 Yosemite, 10.11 El Capitan, 10.12 Sierra, 10.13 High Sierra and later\n\n"
+            
+            "The frequency range and analysis capabilities of this application were designed "
+            "to match the Blue Yeti's 20-20,000 Hz frequency response for optimal results.\n\n\n"
+            
+            "DEVELOPMENT SYSTEM SPECIFICATIONS\n\n"
+            "This application was developed and tested on the following system:\n\n"
+            
+            "Processor: Intel® Core™ i9-14900K\n"
+            "  • Cores: 24 (8 Performance-cores + 16 Efficient-cores)\n"
+            "  • Threads: 32\n"
+            "  • P-core Base/Boost: 3.2 GHz / 5.6 GHz\n"
+            "  • E-core Base/Boost: 2.4 GHz / 4.4 GHz\n"
+            "  • Max Turbo Frequency (Thermal Velocity Boost): 6.0 GHz\n"
+            "  • Cache: 36 MB Intel Smart Cache + 32 MB L2\n"
+            "  • Base Power: 125W / Max Turbo Power: 253W\n"
+            "  • Architecture: Raptor Lake (Intel 7 process)\n\n"
+            
+            "Memory: G.Skill DDR5-7200 48GB (2x24GB)\n"
+            "  • Speed: 7200 MT/s\n"
+            "  • Timings: CL36-46-46\n"
+            "  • Configuration: Dual Channel\n\n"
+            
+            "Graphics: NVIDIA GeForce RTX 4070 Super Founders Edition\n"
+            "  • GPU: AD104-350 (Ada Lovelace)\n"
+            "  • CUDA Cores: 7168\n"
+            "  • Boost Clock: 2475 MHz\n"
+            "  • Memory: 12 GB GDDR6X (192-bit bus)\n"
+            "  • Memory Bandwidth: 504 GB/s\n"
+            "  • RT Cores: 56 (3rd Gen)\n"
+            "  • Tensor Cores: 224 (4th Gen)\n"
+            "  • TDP: 220W\n"
+            "  • Manufacturing: TSMC 4N (5nm class)\n\n"
+            
+            "Storage: WD_BLACK SN850X 2TB NVMe SSD\n"
+            "  • Sequential Read: 7300 MB/s\n"
+            "  • Sequential Write: 6600 MB/s\n"
+            "  • Random Read: 1200K IOPS\n"
+            "  • Random Write: 1100K IOPS\n"
+            "  • Interface: PCIe Gen4 x4 NVMe\n"
+            "  • Form Factor: M.2 2280\n\n"
+            
+            "Motherboard: NZXT N7 Z790\n"
+            "  • Chipset: Intel Z790 Express\n"
+            "  • Socket: LGA 1700\n"
+            "  • Power Design: 16+1+2 DrMOS phases\n"
+            "  • Memory Support: DDR5 up to 6000+ MHz (XMP 3.0)\n"
+            "  • Expansion: PCIe 5.0 x16, 3x M.2 slots\n"
+            "  • Connectivity: Wi-Fi 6E, Bluetooth 5.3, 2.5GbE LAN\n"
+            "  • Audio: 8-channel HD Audio\n\n"
+            
+            "Power Supply: Seasonic Focus GX-750\n"
+            "  • Wattage: 750W\n"
+            "  • Efficiency: 80 PLUS Gold (up to 92%)\n"
+            "  • Modular: Fully Modular\n"
+            "  • Fan: 120mm Fluid Dynamic Bearing\n\n"
+            
+            "Operating System: Windows 11 Pro\n\n\n"
+            
             "CONCLUSION\n\n"
             "This project represents a combined effort in physics, programming, and "
             "experimental analysis, developed as part of a Gymnasiearbete."
@@ -507,6 +588,10 @@ class App:
         credits_win = tk.Toplevel(self.root)
         credits_win.title("Credits")
         credits_win.geometry("600x400")
+        try:
+            credits_win.iconbitmap(resource_path("FV_icon.ico"))
+        except Exception:
+            pass
         
         # Main frame with padding
         main_frame = tk.Frame(credits_win, padx=20, pady=20)
@@ -560,8 +645,12 @@ class App:
     
     def show_help(self):
         help_win = tk.Toplevel(self.root)
-        help_win.title("Help - How to Use HZMeter")
+        help_win.title("Help - How to Use the Frequency Visualizer")
         help_win.geometry("700x600")
+        try:
+            help_win.iconbitmap(resource_path("FV_icon.ico"))
+        except Exception:
+            pass
         
         # Create scrollable frame
         canvas = tk.Canvas(help_win)
@@ -578,12 +667,12 @@ class App:
         
         help_text = (
             "═══════════════════════════════════════════════════════════\n"
-            "                    HZMETER - AUDIO ANALYZER\n"
+            "           FREQUENCY VISUALIZER - AUDIO ANALYZER\n"
             "═══════════════════════════════════════════════════════════\n\n"
             
             "OVERVIEW\n"
             "────────────────────────────────────────────────────────\n"
-            "HZMeter is a real-time audio analysis tool that records microphone\n"
+            "Frequency Visualizer is a real-time audio analysis tool that records microphone\n"
             "input and displays frequency information in two ways:\n"
             "  • Linear View: Continuous pitch tracking over time\n"
             "  • Spectrogram: Full frequency spectrum visualization\n\n"
@@ -616,7 +705,7 @@ class App:
             "  - X-axis limited to recording duration\n"
             "• Pan: Arrow keys to move view\n"
             "• Reset Zoom [Z]: Reset view to default\n"
-            "• Dark Mode [D]: Toggle dark/light theme\n"
+            "• Dark Mode: Toggle dark/light theme\n"
             "• Modes:\n"
             "  - Low Range (50-2000 Hz): Optimized for human voice\n"
             "  - Full Range (50-20000 Hz): For instruments and higher pitches\n\n"
@@ -663,16 +752,34 @@ class App:
             
             "TECHNICAL SPECIFICATIONS\n"
             "────────────────────────────────────────────────────────\n"
-            "• Sample Rate: 44,100 Hz (CD quality)\n"
+            "• Sample Rate: 48,000 Hz (CD audio quality)\n"
             "• Pitch Algorithm: YIN (robust fundamental frequency estimator)\n"
             "• Frequency Resolution: ~10.8 Hz (spectrogram)\n"
             "• Temporal Resolution: ~11.6 ms per frame\n"
             "• Detection Range: 50-20000 Hz (mode dependent)\n"
             "• Analysis: Offline (post-recording)\n\n"
             
+            "DESIGNED FOR: BLUE MICROPHONES™ BLUE YETI USB MIC\n"
+            "────────────────────────────────────────────────────────\n"
+            "This application was developed and optimized specifically for\n"
+            "use with the Blue Microphones™ Blue Yeti USB Microphone.\n\n"
+            
+            "Recording Specifications:\n"
+            "  • Type: Table microphone (3 condenser capsules)\n"
+            "  • Frequency Response: 20 - 20,000 Hz\n"
+            "  • Microphone THD: 0.5%\n"
+            "  • Sample Rate: 48 kHz / 16-bit\n"
+            "  • Sensitivity (1kHz): 4.5 mV/Pa\n"
+            "  • Connectivity: USB (Wired)\n"
+            "  • Power: USB powered (5V, 150 mA)\n\n"
+            
+            "Compatibility:\n"
+            "  • Windows: 7, 8, 8.1, 10, 11\n"
+            "  • macOS: 10.10 Yosemite and later\n\n"
+            
             "═══════════════════════════════════════════════════════════\n"
             "For all keybinds, see Misc → Keybinds\n"
-            "═══════════════════════════════════════════════════════════"
+            "═══════════════════════════════════════════════════════════\n"
         )
         
         tk.Label(scrollable_frame, text=help_text, justify="left", 
@@ -684,6 +791,10 @@ class App:
     def show_keybinds(self):
         kb_win = tk.Toplevel(self.root)
         kb_win.title("Keybinds")
+        try:
+            kb_win.iconbitmap(resource_path("FV_icon.ico"))
+        except Exception:
+            pass
         kb_text = (
             "R : Record\n"
             "L : Linear view\n"
@@ -710,21 +821,21 @@ class App:
         
         if self.dark_mode:
             # Dark mode colors
-            bg_color = "#171717"       # App background
-            ui_bg = "#252424BD"          # UI element backgrounds (slightly darker than graph)
+            bg_color = "#181818"       # App background
+            ui_bg = "#181818"          # UI element backgrounds (slightly darker than graph)
             graph_bg = "#1F1F1F"       # Inside graph
-            fig_bg = "#1B1B1B"         # Outside graph (figure)
-            text_color = "#818181"     # Text color
+            fig_bg = "#181818"         # Outside graph (figure)
+            text_color = "#BDBDBD"     # Text color
             
             # Update menu label
             self.opt_menu.entryconfig(5, label="Light Mode [D]")
         else:
             # Light mode colors (default)
-            bg_color = 'SystemButtonFace'
-            ui_bg = 'SystemButtonFace'
-            graph_bg = 'white'
-            fig_bg = 'white'
-            text_color = 'black'
+            bg_color = "#F0F0F0"       # App background (SystemButtonFace)
+            ui_bg = "#F0F0F0"          # UI element backgrounds
+            graph_bg = "#FFFFFF"       # Inside graph (white)
+            fig_bg = "#F0F0F0"         # Outside graph (figure)
+            text_color = "#000000"     # Text color (black)
             
             # Update menu label
             self.opt_menu.entryconfig(5, label="Dark Mode [D]")
@@ -786,6 +897,42 @@ class App:
         # Recursively apply to children
         for child in widget.winfo_children():
             self._apply_theme_to_widget(child, bg_color, ui_bg, text_color)
+    
+    def _apply_initial_theme(self):
+        """Apply initial light mode theme colors on startup."""
+        # Light mode colors
+        bg_color = "#F0F0F0"       # App background
+        ui_bg = "#F0F0F0"          # UI element backgrounds
+        graph_bg = "#FFFFFF"       # Inside graph (white)
+        fig_bg = "#F0F0F0"         # Outside graph (figure)
+        text_color = "#000000"     # Text color (black)
+        
+        # Apply to root window
+        self.root.configure(bg=bg_color)
+        
+        # Apply to menu bar and dropdown menus
+        self.menubar.configure(bg=ui_bg, fg=text_color, activebackground='#0078D4', activeforeground='white')
+        for menu in [self.file_menu, self.view_menu, self.opt_menu, self.misc_menu]:
+            menu.configure(bg=ui_bg, fg=text_color, activebackground='#0078D4', activeforeground='white')
+        
+        # Apply to tkinter widgets
+        for widget in self.root.winfo_children():
+            self._apply_theme_to_widget(widget, bg_color, ui_bg, text_color)
+        
+        # Apply to matplotlib figure
+        self.fig.set_facecolor(fig_bg)
+        if hasattr(self, 'ax') and self.ax is not None:
+            self.ax.set_facecolor(graph_bg)
+            self.ax.spines['bottom'].set_color(text_color)
+            self.ax.spines['top'].set_color(text_color)
+            self.ax.spines['left'].set_color(text_color)
+            self.ax.spines['right'].set_color(text_color)
+            self.ax.xaxis.label.set_color(text_color)
+            self.ax.yaxis.label.set_color(text_color)
+            self.ax.tick_params(axis='x', colors=text_color)
+            self.ax.tick_params(axis='y', colors=text_color)
+        
+        self.canvas.draw()
 
     # =========================
     # FILE SAVE
@@ -1303,7 +1450,7 @@ class App:
         for i, (x, y) in enumerate(self.markers):
             if y is not None:
                 self.ax.scatter(x, y, marker='x', 
-                              color=marker_color, s=78, linewidths=1.5)
+                              color=marker_color, s=78, linewidths=1.2)
                 # Add marker number label
                 self.ax.annotate(str(i + 1), (x, y), textcoords="offset points",
                                xytext=(5, 5), fontsize=8, color=marker_color)
