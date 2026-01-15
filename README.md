@@ -19,9 +19,13 @@ A real-time audio frequency analysis tool built with Python and Tkinter. Develop
 
 ## Screenshots
 
-*Linear view showing pitch tracking with harmonics*
+### Linear View
+![Linear View](Screenshots/Linearview.png)
+*Pitch tracking with fundamental frequency and harmonic overlays*
 
-*Spectrogram view showing frequency spectrum over time*
+### Spectrogram View
+![Spectrogram View](Screenshots/Spectographview.png)
+*Full frequency spectrum visualization over time*
 
 ## Installation
 
