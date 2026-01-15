@@ -131,11 +131,6 @@ This application was developed as part of a Gymnasiearbete with the theme **"Sou
 **School:** [Tyska Skolan Stockholm](https://tyskaskolan.se/)  
 **Mentor:** Tekn. Dr. Peter Hammerstein
 
-**Tools Used:**
-- [Visual Studio Code](https://code.visualstudio.com/)
-- [GitHub Copilot](https://github.com/features/copilot)
-- [ChatGPT](https://openai.com/)
-
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
